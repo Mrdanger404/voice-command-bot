@@ -1,5 +1,12 @@
+const btn = document.getElementById('btn')
+
 
 function speaking(text){
+
+    if(speechSynthesis.speaking){
+        return;
+    }
+
     let speakData = new SpeechSynthesisUtterance();
     speakData.volume = 1;
     speakData.rate = 1;
@@ -20,6 +27,17 @@ function speaking(text){
 let windowOpenUrl = ''
 
 
+
+// keywords start
+
+const hello = ['hey', 'hello', 'hey jarvis', 'hello jarvis'];
+const youtube = ['open youtube', 'jarvis open youtube', 'youtube'];
+const facebook = ['open facebook', 'jarvis open facebook', 'facebook'];
+const owner = ['owner', 'creator', 'founder'];
+
+// keywords end
+
+
 function startListening(){
     const recognition = new window.webkitSpeechRecognition();
     
@@ -27,17 +45,17 @@ function startListening(){
         const transcript = event.results[0][0].transcript;
         console.log(transcript)
 
-        if(transcript.toLowerCase().includes("hey jarvis" || "hey" || "hello")){
+        if(hello.some(keyword => transcript.toLowerCase().includes(keyword))){
             speaking("Hello sir, how can i help you?")
             
-        }else if(transcript.toLowerCase().includes('youtube')){
+        }else if(youtube.some(keyword => transcript.toLowerCase().includes(keyword))){
             speaking("opening youtube")
             windowOpenUrl = 'https://youtube.com'
 
-        }else if(transcript.toLowerCase().includes('owner' || 'creator' || 'founder')){
+        }else if(owner.some(keyword => transcript.toLowerCase().includes(keyword))){
             speaking("Tajbir islam is my owner and creator")
 
-        }else if(transcript.toLowerCase().includes('facebook')){
+        }else if(facebook.some(keyword => transcript.toLowerCase().includes(keyword))){
             speaking("opening facebook");
             windowOpenUrl = 'https://facebook.com'
 
@@ -53,8 +71,11 @@ function startListening(){
 
 
 
-
-
-window.onload = function() {
+btn.addEventListener('click', ()=> {
     startListening();
-}
+    speaking('hello sir, i am listening')
+})
+
+// window.onload = function() {
+//     startListening();
+// }
